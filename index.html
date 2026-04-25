@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BVNAB 3D Printing</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+  background: radial-gradient(circle at top,#0f172a,#020617);
+  color:#fff;
+  height:100vh;
+  overflow:hidden;
+}
+
+.container{
+  height:100vh;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* NAV */
+.nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:600;
+}
+.logo span{color:#22c55e;}
+
+.contact-btn{
+  border:1px solid #22c55e;
+  padding:10px 20px;
+  border-radius:30px;
+  color:#22c55e;
+  cursor:pointer;
+  transition:.3s;
+}
+.contact-btn:hover{
+  background:#22c55e;
+  color:#000;
+}
+
+/* CONTACT POPUP */
+.contact-popup{
+  position:fixed;
+  top:70px;
+  right:20px;
+  display:none;
+  z-index:1000;
+}
+.contact-box{
+  background:#020617;
+  border:1px solid #1e293b;
+  padding:20px;
+  border-radius:15px;
+  width:260px;
+  position:relative;
+}
+.contact-box h3{color:#22c55e;margin-bottom:10px;}
+.contact-box p{margin:8px 0;}
+.close{
+  position:absolute;
+  right:15px;
+  top:10px;
+  cursor:pointer;
+}
+
+/* TAGS */
+.tags{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+.tag{
+  border:1px solid #1e293b;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+/* MAIN */
+.main{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:20px;
+  flex:1;
+}
+
+/* LEFT */
+.left h1{
+  font-size:36px;
+}
+.left h1 span{color:#22c55e;}
+.sub{opacity:0.7;}
+
+/* BED */
+.beds{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:10px;
+}
+.card{
+  border:1px solid #1e293b;
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
+  transition:.3s;
+}
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 20px rgba(34,197,94,0.3);
+}
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:contain;
+}
+.card h4{color:#22c55e;}
+.card p{font-size:12px;}
+
+/* RANGE */
+.range{
+  display:flex;
+  align-items:center;
+  margin:10px 0;
+  color:#22c55e;
+}
+.bar{
+  flex:1;
+  height:4px;
+  background:#22c55e;
+  margin:0 10px;
+}
+
+/* INFO */
+.info{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.box{
+  border:1px solid #1e293b;
+  padding:10px;
+  border-radius:10px;
+  font-size:12px;
+}
+.box span{
+  color:#22c55e;
+  display:block;
+}
+
+/* RIGHT */
+.right{
+  border:1px solid #1e293b;
+  border-radius:12px;
+  padding:15px;
+}
+.right h2{color:#22c55e;}
+input,textarea{
+  width:100%;
+  padding:8px;
+  margin:6px 0;
+  background:#020617;
+  border:1px solid #1e293b;
+  color:#fff;
+}
+.btn{
+  background:#22c55e;
+  color:#000;
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  width:100%;
+  cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:1000px){
+  body{overflow:auto;height:auto;}
+  .main{grid-template-columns:1fr;}
+  .beds{grid-template-columns:repeat(2,1fr);}
+  .info{grid-template-columns:repeat(2,1fr);}
+}
+
+/* RIGHT SIDE DELIVERED */
+.delivered-right{
+  margin-top:15px;
+  border-top:1px solid #1e293b;
+  padding-top:10px;
+}
+
+.delivered-right h3{
+  color:#22c55e;
+  font-size:14px;
+  margin-bottom:8px;
+}
+
+.delivered-list{
+  display:flex;
+  gap:8px;
+}
+
+.d-card{
+  width:70px;
+  text-align:center;
+}
+
+.d-card img{
+  width:100%;
+  height:50px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.d-card p{
+  font-size:10px;
+}
+
+.customer-count{
+  font-size:18px;
+  margin-top:5px;
+  text-align:center;
+  color:#22c55e;
+}
+
+/* INTRO SCREEN */
+.intro{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#020617;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation:fadeOut 1s ease forwards;
+  animation-delay:3s;
+}
+
+.intro h1{
+  text-align:center;
+  font-size:28px;
+  line-height:1.6;
+  color:#fff;
+  animation:zoomIn 1s ease;
+}
+
+.intro span{
+  color:#22c55e;
+  font-size:32px;
+}
+
+.intro b{
+  color:#22c55e;
+}
+
+.intro small{
+  font-size:16px;
+  opacity:0.7;
+}
+
+/* ANIMATIONS */
+@keyframes zoomIn{
+  from{transform:scale(0.7); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+
+@keyframes fadeOut{
+  to{
+    opacity:0;
+    visibility:hidden;
+  }
+}
+</style>
+</head>
+
+<body>
+<!-- INTRO ANIMATION -->
+<div class="intro" id="intro">
+  <h1>
+    <span>Hello Pune 👋</span><br>
+    Welcome to <b>BVNAB 3D</b><br>
+    <small>Your 3D Printing Partner</small>
+  </h1>
+</div>
+<div class="container">
+
+<!-- NAV -->
+<div class="nav">
+  <div class="logo">BVNAB <span>3D</span></div>
+  <div class="contact-btn" onclick="openContact()">Contact Us</div>
+</div>
+
+<!-- CONTACT POPUP -->
+<div class="contact-popup" id="contactPopup">
+  <div class="contact-box">
+    <span class="close" onclick="closeContact()">×</span>
+    <h3>Contact Details</h3>
+    <p>📞 +91 9356368018</p>
+    <p>💬 WhatsApp Available</p>
+    <p>📍 Pune, Maharashtra</p>
+  </div>
+</div>
+
+<!-- TAGS -->
+<div class="tags">
+  <div class="tag">Precision Printing</div>
+  <div class="tag">Quality Assured</div>
+  <div class="tag">Fast Delivery</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="left">
+
+<h1>3D PRINTING <span>SERVICES</span></h1>
+<p class="sub">From small prototypes to large parts</p>
+
+<div class="beds">
+  <div class="card"><img src="Anycubic_Kobra_2_Neo_3D_Printer_4.jpg"><h4>SMALL</h4><p>200×200×200</p></div>
+  <div class="card"><img src="BD8R7epWmp9oCkSZ77R8tX-480-80.png"><h4>MEDIUM</h4><p>350×350×350</p></div>
+  <div class="card"><img src="OIP (1).webp"><h4>LARGE</h4><p>450×450×450</p></div>
+  <div class="card"><img src="R111907Ex1-462x462.png"><h4>MULTI COLOUR</h4><p>200*200*200</p></div>
+</div>
+
+<div class="range">200mm<div class="bar"></div>450mm</div>
+
+<div class="info">
+  <div class="box">Free Delivery in Pune<span>Above ₹1800</span></div>
+  <div class="box">Time<span>1–2 Days</span></div>
+  <div class="box">Material<span>PLA | ABS</span></div>
+  <div class="box">Color<span>Black | White | Multi Colour</span></div>
+</div>
+
+</div>
+
+<div class="right">
+<h2>Instant Quote</h2>
+<input placeholder="Full Name">
+<input placeholder="Phone">
+<input type="file">
+<textarea placeholder="Notes"></textarea>
+<button class="btn" onclick="sendWhatsApp()">Send on WhatsApp</button>
+<div class="delivered-right">
+  <h3>Delivered Parts</h3>
+
+  <div class="delivered-list">
+    <div class="d-card">
+      <img src="Screenshot 2026-04-25 213616.png">
+      
+    </div>
+    <div class="d-card">
+      <img src="Screenshot 2026-04-25 213526.png">
+      
+    </div>
+    <div class="d-card">
+      <img src="Screenshot 2026-04-25 213445.png">
+      
+    </div>
+    <div class="d-card">
+      <img src="Screenshot 2026-04-25 214147.png">
+      
+    </div>
+    <div class="d-card">
+      <img src="Screenshot 2026-04-25 213828.png">
+      
+    </div>
+    <div class="d-card">
+      <img src="Screenshot 2026-04-25 213854.png">
+      
+    </div>
+  </div>
+<br>
+  <p class="customer-count">100+ Parts Delivered</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function openContact(){
+  document.getElementById("contactPopup").style.display="block";
+}
+function closeContact(){
+  document.getElementById("contactPopup").style.display="none";
+}
+function sendWhatsApp(){
+  let msg="Hello, I need 3D printing service";
+  window.open("https://wa.me/919356368018?text="+encodeURIComponent(msg));
+}
+</script>
+
+</body>
+</html>
